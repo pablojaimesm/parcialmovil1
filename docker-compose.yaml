@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: pepe-db:latest
+    restart: always
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - pg
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    container_name: postgres-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    depends_on:
+      - postgres
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - pg
+
+  app:
+    image: app:latest
+    restart: always
+    container_name: app
+    depends_on: [postgres, pgadmin]
+    ports:
+      - "3000:3000"
+    networks:
+      - pg
+
+networks:
+  pg:
+    name: pg
+    driver: bridge
+
+volumes:
+  postgres_data:
+  pgadmin_data:

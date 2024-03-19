@@ -1,10 +1,19 @@
 import express from "express"
-import { router } from "router";
+import { AppRouter } from "router";
 
-const app = express();
 
-app.use(express.json());
+async function main(){
+    const app = express();
+    app.use(express.json());
 
-app.use(router);
+    const db = await Database(process.env.pg);
 
-app.listen(3000);
+    const repositorio = new UsuarioRepositorio(db);
+    const controller = new UsuarioController(repositorio);
+
+    const router = new AppRouter(controller);
+
+    app.use(router.getRouter());
+
+    app.listen(3000);
+}

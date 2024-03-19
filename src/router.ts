@@ -1,6 +1,4 @@
-import { authController } from "controlador/autenticar";
-import { loginController } from "controlador/login";
-import { registerController } from "controlador/register";
+import { UsuarioController } from "controlador/usuarioController";
 import express from "express";
 
 export class AppRouter {
@@ -14,10 +12,9 @@ export class AppRouter {
     }
 
     getRouter() {
-        router.post("/login", loginController);
-        router.post("/register", registerController);
-        router.post("/auth", authController);
-
+        this.router.post("/login", this.controller.login);
+        this.router.post("/register", this.controller.register);
+        this.router.post("/auth", this.controller.auth);
         return this.router;
     }
 

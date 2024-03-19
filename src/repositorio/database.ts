@@ -1,4 +1,4 @@
-import { Client, Pool, PoolClient } from "pg";
+import { Pool, PoolClient } from "pg";
 
 export class Database {
 
